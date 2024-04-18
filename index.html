@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+    <title>Tienda de Balones</title>
+    <style>
+        #carrito {
+           position: fixed; top: 0; right: 0; background-color: lightgray; padding: 5px; border: 1px solid black; max-height: 300px; /* Altura máxima del carrito / overflow-y: auto; / Añadir barra de desplazamiento vertical si es necesario */ }
+        }
+    </style>
+</head>
+<body bgcolor="3366FF">
+    <h1>Tienda de Balones</h1>
+    
+    <h2>Balones Disponibles</h2>
+    <ul>
+        <li>
+            <img src="futbol.jpg" alt="Balón de Fútbol" width="50">
+            <span>Modelo: Balón de Fútbol (#5)</span><br>
+            <span>Precio: $700</span><br>
+            <button onclick="comprar('futbol')">Comprar</button>
+        </li>
+    </ul>
+    
+    <ul>
+        <li>
+            <img src="futbol3.jpg" alt="Balón de Fútbol Americano" width="50">
+            <span>Modelo: Balón de Fútbol Americano (#3)</span><br>
+            <span>Precio: $180.50</span><br>
+            <button onclick="comprar('futbol #3')">Comprar</button>
+        </li>
+    </ul>
+    
+    <ul>
+        <li>
+            <img src="futbol4.jpg" alt="Balón de Fútbol #4" width="50">
+            <span>Modelo: Balón de Fútbol (#4)</span><br>
+            <span>Precio: $800</span><br>
+            <button onclick="comprar('futbol #4')">Comprar</button>
+        </li>
+    </ul>
+    
+    <ul>
+        <li>
+            <img src="baloncesto.jpg" alt="Balón de Baloncesto" width="50">
+            <span>Modelo: Balón de Baloncesto</span><br>
+            <span>Precio: $259</span><br>
+            <button onclick="comprar('baloncesto')">Comprar</button>
+        </li>
+    </ul>
+    
+    <ul>
+        <li>
+            <img src="voleibol.jpg" alt="Balón de Voleibol" width="50">
+            <span>Modelo: Balón de Voleibol</span><br>
+            <span>Precio: $211</span><br>
+            <button onclick="comprar('voleibol')">Comprar</button>
+        </li>
+    </ul>
+
+    <ul>
+        <li>
+            <img src="rugby.jpg" alt="Balón de Rugby" width="50">
+            <span>Modelo: Balón de Rugby</span><br>
+            <span>Precio: $320</span><br>
+            <button onclick="comprar('rugby')">Comprar</button>
+        </li>
+    </ul>
+    
+    <ul>
+        <li>
+            <img src="tenis.jpg" alt="Balón de Tenis" width="50">
+            <span>Modelo: Balón de Tenis</span><br>
+            <span>Precio: $150</span><br>
+            <button onclick="comprar('tenis')">Comprar</button>
+        </li>
+    </ul>
+
+    <h2>Métodos de Pago</h2>
+    <select id="metodoPago">
+        <option value="efectivo">Efectivo</option>
+        <option value="tarjeta">Tarjeta de Crédito</option>
+    </select>
+
+    <div id="datosPersonales" style="display: none;">
+        <h2>Datos Personales</h2>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre"><br><br>
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido"><br><br>
+        <label for="numTarjeta">Número de Tarjeta:</label>
+        <input type="text" id="numTarjeta"><br><br>
+        <label for="telefono">Número de Teléfono:</label>
+        <input type="text" id="telefono"><br><br>
+        <label for="correo">Correo Electrónico:</label>
+        <input type="text" id="correo"><br><br>
+    </div>
+
+    <div id="carrito">
+        <h2>Carrito</h2>
+        <ul id="itemsCarrito"></ul>
+        <h3>Total: <span id="totalCarrito">$0</span></h3>
+    </div>
+
+    <button onclick="toggleDatosPersonales()">Agregar Datos Personales</button>
+    <button onclick="realizarCompra()">Realizar Compra</button>
+
+    <script>
+        var carrito = [];
+        var total = 0;
+
+        function comprar(modelo) {
+            carrito.push(modelo);
+            actualizarCarrito();
+            alert("Has añadido un balón de " + modelo + " al carrito.");
+        }
+
+        function actualizarCarrito() {
+            var listaCarrito = document.getElementById("itemsCarrito");
+            listaCarrito.innerHTML = "";
+            total = 0;
+            carrito.forEach(function(item) {
+                var listItem = document.createElement("li");
+                listItem.textContent = item;
+                listaCarrito.appendChild(listItem);
+                total += calcularPrecio(item);
+            });
+            document.getElementById("totalCarrito").textContent = "$" + total;
+        }
+
+        function calcularPrecio(modelo) {
+            switch (modelo) {
+                case 'futbol':
+		    return 700;	
+                case 'futbol #4':
+                    return 800;
+                case 'futbol #3':
+                    return 180.50;
+                case 'baloncesto':
+                    return 259;
+                case 'voleibol':
+                    return 211;
+                case 'rugby':
+                    return 320;
+                case 'tenis':
+                    return 150;
+                default:
+                    return 0;
+            }
+        }
+
+        function toggleDatosPersonales() {
+            var datosPersonales = document.getElementById("datosPersonales");
+            datosPersonales.style.display = "block";
+        }
+
+        function realizarCompra() {
+            var metodoPago = document.getElementById("metodoPago").value;
+            var nombre = document.getElementById("nombre").value;
+            var apellido = document.getElementById("apellido").value;
+            var numTarjeta = document.getElementById("numTarjeta").value;
+            var telefono = document.getElementById("telefono").value;
+            var correo = document.getElementById("correo").value;
+
+            if (nombre === "" || apellido === "" || telefono === "" || correo === "") {
+                alert("Por favor completa todos los campos de datos personales.");
+                return;
+            }
+
+            if (metodoPago === "efectivo") {
+                alert("Compra realizada con éxito. Pago en efectivo.");
+            } else {
+                enviarCorreo(nombre, apellido, numTarjeta, telefono, correo);
+                alert("Compra realizada con éxito. Pago con tarjeta de crédito.\nSe han enviado los datos al correo electrónico: " + correo);
+            }
+        }
+
+        function enviarCorreo(nombre, apellido, numTarjeta, telefono, correo) {
+            // Implementación del envío de correo electrónico
+            console.log("Datos enviados por correo electrónico:");
+            console.log("Nombre:", nombre);
+            console.log("Apellido:", apellido);
+            console.log("Número de Tarjeta:", numTarjeta);
+            console.log("Teléfono:", telefono);
+            console.log("Correo Electrónico:", correo);
+        }
+    </script>
+</body>
+</html>
